@@ -1,7 +1,7 @@
 # .vscode
 .vscode/
 
-sb-backend/target/
-sb-frontend/target/
+target/
+target/
 
 gittoken
