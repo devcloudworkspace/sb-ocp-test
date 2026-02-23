@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sb-ocp-test-meta
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: sb-ocp-test-component
+  template:
+    metadata:
+      labels:
+        name: sb-ocp-test-component
+    spec:
+      containers:
+        - name: sb-ocp-test-container
+          image: devcloudworkspace/sbocptest:1.0.0
+          ports:
+            - containerPort: 8081
+      
+      
