@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: sb-ocp-test-container
-          image: devcloudworkspace/sbocptest:1.0.0
+          image: quay.io/devcloud1user2/myrepo/sb-ocp-test:1.0.0
           ports:
             - containerPort: 8081
       
