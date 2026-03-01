@@ -19,7 +19,7 @@ public class HelloController {
 		LOG.info("entering 'sayHi'");
 		try {
 			LOG.info("exiting 'sayHi'");
-			return new ResponseEntity<>("Hii, ", HttpStatus.OK);
+			return new ResponseEntity<>("Hiii, ", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>("Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
