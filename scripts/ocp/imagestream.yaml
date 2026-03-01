@@ -1,0 +1,8 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: sbocp
+  namespace: devcloud1user2-dev
+spec:
+  lookupPolicy:
+    local: true

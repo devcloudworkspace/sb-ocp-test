@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: sbocp
+  namespace: devcloud1user2-dev
+  labels:
+    app: sbocp
+spec:
+  name: target-8081
+  type: ClusterIP
+  selector:
+    name: sbocp
+  ports:
+    - port: 8081
+      targetPort: 8081
