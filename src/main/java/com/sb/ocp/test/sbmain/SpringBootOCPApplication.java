@@ -12,7 +12,7 @@ public class SpringBootOCPApplication {
 
 	public static void main(String[] args) {
 
-		LOG.info("Loaded SpringBootOCPApplication successfully...1");
+		LOG.info("Loaded SpringBootOCPApplication successfully...");
 
 		SpringApplication.run(SpringBootOCPApplication.class, args);
 	}
