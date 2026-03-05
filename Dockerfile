@@ -1,4 +1,4 @@
-FROM maven:3.8.4-openjdk-11-slim AS build
+FROM maven:3.8.4-openjdk-17-slim AS build
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ COPY pom.xml .
 
 RUN mvn clean install -DskipTests
 
-FROM alpine/java:11-jdk
+FROM alpine/java:17-jdk
 
 WORKDIR /app
 

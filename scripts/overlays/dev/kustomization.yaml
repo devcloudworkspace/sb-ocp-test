@@ -1,0 +1,22 @@
+resources:
+- ../../base
+
+namespace: dev
+
+patches:
+  - path: replicas.yaml
+  - path: images.yaml
+  - path: service.yaml
+
+configMapGenerator:
+- name: myconfigmap
+  files:
+    - application.properties
+
+secretGenerator:
+- name: mysecretmap
+  literals:
+  - sec.sec1=test1-Dev
+  - sec.sec2=test2-Dev
+
+  

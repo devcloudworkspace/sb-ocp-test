@@ -2,11 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: sbocp
-  labels:
-    app: sbocp
 spec:
-  selector:
-    app: sbocp
   ports:
     - port: 8081
       targetPort: 8081

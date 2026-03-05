@@ -1,0 +1,11 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: myconfigmap
+data: 
+  application.properties: |
+    conf.conf1: AAAAAAAA1
+    conf.conf2: BBBBBBBB1
+
+  # conf.conf1: AAAAAAAA
+  # conf.conf2: BBBBBBBB
