@@ -1,0 +1,19 @@
+resources:
+- deployment.yaml
+- service.yaml
+
+namespace: default
+
+labels:
+- includeSelectors: true
+  pairs:
+    app: sbocp
+
+commonAnnotations:
+  myannotation: annotation1
+
+namePrefix:
+
+nameSuffix:
+
+  

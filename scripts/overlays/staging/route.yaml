@@ -1,0 +1,10 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: sbocp
+spec:
+  to: 
+    kind: Service
+    name: sbocp
+    port:
+      targetPort: 8081-tcp

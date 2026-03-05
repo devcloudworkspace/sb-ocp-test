@@ -1,0 +1,13 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: sbocp
+spec:
+  template:
+    spec:
+      containers:
+        - name: sbocp-container
+          image: quay.io/devcloud1user2/myrepo/sb-ocp-test:1.0.0
+          
+          
+

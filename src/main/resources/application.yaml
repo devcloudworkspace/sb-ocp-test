@@ -1,2 +1,10 @@
 server:
  port: 8081
+
+conf:
+  conf1: dummy #${conf-val1} #conf-val1
+  conf2: dummy #${conf-val2} #conf-val2
+
+sec:
+  sec1: dummy #${sec-val1} #sec-val1
+  sec2: dummy #${sec-val2} #sec-val2

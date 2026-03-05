@@ -1,5 +1,5 @@
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: sbocp
   labels:
@@ -8,16 +8,66 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: sbocp
+      app: sbocp
   template:
     metadata:
+      name: sbocp
       labels:
-        name: sbocp
+        app: sbocp
     spec:
       containers:
-        - name: sbocp
-          image: image-registry.openshift-image-registry.svc:5000/devcloud1user2-dev/sbocp:1.0.0
+        - name: sbocp-container
+          # image: image-registry.openshift-image-registry.svc:5000/devcloud1user2-dev/sbocp:1.0.0
+          image: quay.io/devcloud1user2/myrepo/sb-ocp-test:1.0.0
           ports:
             - containerPort: 8081
+          envFrom:
+            - secretRef:
+                name: mysecretmap
+          volumeMounts:
+            - mountPath: /app/config/application.properties
+              name: myconfigmap
+      volumes:
+        - name: myconfigmap
+          configMap:
+            name: myconfigmap
+
+          # envFrom:
+          #   - configMapRef:
+          #       name: myconfigmap
+          #   - secretRef:
+          #       name: mysecretmap
+
+
+          # env:
+          #   - name: conf.conf1
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: myconfigmap
+          #         key: conf.conf1
+          #   - name: conf.conf2
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: myconfigmap
+          #         key: conf.conf2
+          #   - name: sec.sec1
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: mysecretmap
+          #         key: sec.sec1
+          #   - name: sec.sec2
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: mysecretmap
+          #         key: sec.sec2 
+
+          #  - name: conf.conf1
+          #    value: conf1
+          #  - name: conf.conf2
+          #    value: conf2
+          #  - name: sec.sec1
+          #    value: sec1
+          #  - name: sec.sec2
+          #    value: sec1
 
 

@@ -28,6 +28,7 @@ spec:
     - type: GitHub
       github:
         secret: secret101
+        # allowEnv: true
     - type: ImageChange
       imageChange: {}
     - type: Generic

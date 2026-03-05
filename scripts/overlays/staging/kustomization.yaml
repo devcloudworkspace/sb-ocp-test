@@ -1,0 +1,22 @@
+resources:
+- ../../base
+- route.yaml
+
+namespace: staging
+
+patches:
+  - path: replicas.yaml
+  - path: images.yaml
+
+configMapGenerator:
+- name: myconfigmap
+  files:
+    - application.properties
+
+secretGenerator:
+- name: mysecretmap
+  literals:
+  - sec.sec1=test1-Staging
+  - sec.sec2=test2-Staging
+
+  
