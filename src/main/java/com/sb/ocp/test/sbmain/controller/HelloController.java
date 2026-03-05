@@ -33,7 +33,7 @@ public class HelloController {
 		LOG.info("entering 'sayHi'");
 		try {
 			LOG.info("exiting 'sayHi'");
-			return new ResponseEntity<>("Hiii test1, Conf1:"+conf1+", Conf2:"+conf2+", Sec1:"+sec1+", Sec2:"+sec2+"...", HttpStatus.OK);
+			return new ResponseEntity<>("Hiii test2, Conf1:"+conf1+", Conf2:"+conf2+", Sec1:"+sec1+", Sec2:"+sec2+"...", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>("Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
