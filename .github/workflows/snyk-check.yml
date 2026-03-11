@@ -29,9 +29,9 @@ jobs:
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
     runs-on: ubuntu-latest
     steps:
-     - uses: actions/checkout@master
+     - uses: actions/checkout@v4
      - name: Run Snyk to check for vulnerabilities
-       uses: snyk/actions/maven@master
+       uses: snyk/actions/maven@main
        env:
          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
        with:
