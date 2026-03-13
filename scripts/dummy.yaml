@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    myannotation: annotation1
+  labels:
+    app: sbocp
+  name: sbocp
+  namespace: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sbocp
+  template:
+    metadata:
+      annotations:
+        myannotation: annotation1
+      labels:
+        app: sbocp
+      name: sbocp
+    spec:
+      containers:
+      - envFrom:
+        - secretRef:
+            name: mysecretmap-5gg6hgftkd
+        image: quay.io/devcloud1user2/myrepo/sb-ocp-test:1.0.0
+        name: sbocp-container
+        ports:
+        - containerPort: 8081
+        volumeMounts:
+        - mountPath: /app/config/application.properties
+          name: myconfigmap
+      volumes:
+      - configMap:
+          name: myconfigmap-g6664hd499
+        name: myconfigmap

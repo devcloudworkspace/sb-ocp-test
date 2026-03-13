@@ -1,0 +1,165 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pt
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: git-checkout
+  namespace: pt
+spec:
+  params:
+    - name: git-url
+      type: string
+    - name: git-branch
+      type: string
+  workspaces:
+    - name: source
+  results:
+    - name: commit-sha
+  steps:
+    - name: git-clone
+      image: alpine/git:2.43.0
+      workingDir: $(workspaces.source.path)
+      script: |
+        #!/bin/sh
+        set -e
+        echo "Checking out git repo"
+        git clone --branch $(params.git-branch) --depth 1 $(params.git-url) .
+        git rev-parse HEAD | tr -d '\n' > $(results.commit-sha.path)
+        echo "Checked out $(params.git-url) at $(cat $(results.commit-sha.path))"
+        ls
+        echo "Files List"
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build
+  namespace: pt
+spec:
+  workspaces:
+    - name: source
+  steps:
+    - name: build
+      image: maven:3.8.4-openjdk-17-slim
+      workingDir: $(workspaces.source.path)
+      script: |
+        #!/bin/sh
+        set -e
+        ls
+        echo "Files List"
+        mvn clean install
+        echo "Build completed successfully"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kaniko-secret
+  namespace: pt
+data:
+  docker-server: cXVheS5pbwo= #quay.io
+  docker-username: ZGV2Y2xvdWQxdXNlcjIrc2JvY3Byb2JvdGFjYzEK #devcloud1user2+sbocprobotacc1
+  docker-password: N05ZMFBHSlJERE5TMTBGN1o4MFRFOTIxNFg2MjZTMkZUTUlHNTlOVVVKTDc4QUVBRTlBMjhGRVZYMUJaU1E5OQo= 
+   #7NY0PGJRDDNS10F7Z80TE9214X626S2FTMIG59NUUJL78AEAE9A28FEVX1BZSQ99
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kaniko-sa
+secrets:
+  - name: kaniko-secret
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-image
+  namespace: pt
+spec:
+  params:
+    - name: image-name
+      type: string
+  workspaces:
+    - name: output
+  steps:
+    - serviceAccountName: kaniko-sa
+      name: build-image
+      image: gcr.io/kaniko-project/executor:v1.19.0
+      args:
+        - "--dockerfile=$(workspaces.output.path)/Dockerfile"
+        - "--context=$(workspaces.output.path)"
+        - "--destination=$(params.image-name)"
+        # - "--no-push"
+---
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: build-deploy
+  namespace: pt
+spec:
+  params:
+    - name: git-url
+      type: string
+    - name: git-branch
+      type: string
+    - name: image-name
+      type: string
+  workspaces:
+    - name: shared-workspace
+  tasks:
+    - name: checkout
+      taskRef:
+        name: git-checkout
+      params:
+        - name: git-url
+          value: $(params.git-url)
+        - name: git-branch
+          value: $(params.git-branch)
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+    - name: build
+      taskRef:
+        name: build
+      runAfter:
+        - checkout
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+    - name: build-image
+      taskRef:
+        name: build-image
+      runAfter:
+        - build
+      params:
+        - name: image-name
+          value: $(params.image-name)
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: build-deploy-
+  namespace: pt
+spec:
+  pipelineRef:
+    name: build-deploy
+  params:
+    - name: git-url
+      value: https://github.com/devcloudworkspace/sb-ocp-test.git
+    - name: git-branch
+      value: "main"
+    - name: image-name
+      value: quay.io/devcloud1user2/myrepo/sb-ocp-test:1.0.0
+  workspaces:
+    - name: shared-workspace
+      # emptyDir: {}
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
