@@ -13,5 +13,5 @@ jobs:
 
       - name: Greeter
         uses: devcloudworkspace/sb-ocp-test-actions/actions/greeter@main
-        # with:
-        #   who-to-greet: Everyone
+        with:
+          who-to-greet: Everyone
