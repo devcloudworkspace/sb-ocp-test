@@ -40,4 +40,4 @@ Events:
   Type    Reason             Age    From                   Message
   ----    ------             ----   ----                   -------
   Normal  ScalingReplicaSet  3m37s  deployment-controller  Scaled up replica set sbocp-6bfb4b8447 from 0 to 2
-  test3
+  test5
