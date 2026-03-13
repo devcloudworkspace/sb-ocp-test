@@ -6,32 +6,30 @@ metadata:
   labels:
     name: sbocp
 spec:
-  runPolicy: Serial
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'sbocp:1.0.0'
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
   strategy:
     type: Docker
     dockerStrategy:
       dockerfilePath: Dockerfile
-    postCommit: {}
+  postCommit: {}
   source:
     type: Git
     git:
       uri: https://github.com/devcloudworkspace/sb-ocp-test.git
       ref: main
     contextDir: /
-  output:
-    to:
-      kind: ImageStreamTag
-      name: 'sbocp:1.0.0'
-  successfulBuildHistoryLimits: 4
-  failureBuildHistoryLimits: 4
   triggers:
     - type: GitHub
       github:
         secret: secret101
-    - type: ImageChange
-      imageChange: {}
     - type: Generic
       generic:
         secret: secret101
         allowEnv: true
     - type: ConfigChange
+  runPolicy: Serial
