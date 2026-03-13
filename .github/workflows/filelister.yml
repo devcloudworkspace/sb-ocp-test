@@ -1,8 +1,15 @@
 name: Listing of Files
 
+on:
+  push:
+    branches: 
+      - 'main'
+      
 jobs:
   Listing-Files:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      
       - name: List-Files
         uses: devcloudworkspace/sb-ocp-test-actions/actions/filelister@main
