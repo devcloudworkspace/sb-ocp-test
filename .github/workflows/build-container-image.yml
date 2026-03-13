@@ -65,6 +65,16 @@ jobs:
           quay.io/devcloud1user2/myrepo/sb-ocp-test:latest
           quay.io/devcloud1user2/myrepo/sb-ocp-test:sha-${{ steps.git-sha.outputs.sha }}
 
+    # - name: Open pull request using gh CLI
+    #   run: |
+    #     gh pr create \
+    #       --title "chore: update via gh cli" \
+    #       --body "This PR was created using the GitHub CLI." \
+    #       --base main \
+    #       --head $(git rev-parse --abbrev-ref HEAD)
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          
     # https://github.com/orgs/community/discussions/26323#discussioncomment-3251454
     # Use the GitHub API to make an authenticated call that triggers a workflow
     # in the manifests repository. The targeted workflow opens a PR to use the
@@ -82,19 +92,19 @@ jobs:
     # https://api.github.com/repos/ORG_OR_USER/MANIFEST_REPO/actions/workflows/update-backend-image.yaml/dispatches \
     # -d '{"ref":"main", "inputs": { "image": "foo" } }'
 
-    # - name: Trigger update workflow in the manifests repository
-    #   uses: actions/github-script@v6
-    #   with:
-    #     github-token: ${{ secrets.PAT }}
-    #     script: |
-    #       await github.rest.actions.createWorkflowDispatch({
-    #         owner: 'devcloudworkspace',
-    #         repo: 'sb-ocp-test-gitops',
-    #         workflow_id: 'update-container-image.yaml',
-    #         ref: 'main',
-    #         inputs: {
-    #           message: '${{ steps.git-message.outputs.message }}',
-    #           image: 'quay.io/devcloud1user2/myrepo/sb-ocp-test:sha-${{ steps.git-sha.outputs.sha }}',
-    #           sha: '${{ steps.git-sha.outputs.sha }}'
-    #         }
-    #       })
+    - name: Trigger update workflow in the manifests repository
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.PAT }}
+        script: |
+          await github.rest.actions.createWorkflowDispatch({
+            owner: 'devcloudworkspace',
+            repo: 'sb-ocp-test-gitops',
+            workflow_id: 'update-container-image.yaml',
+            ref: 'main',
+            inputs: {
+              message: '${{ steps.git-message.outputs.message }}',
+              image: 'quay.io/devcloud1user2/myrepo/sb-ocp-test:sha-${{ steps.git-sha.outputs.sha }}',
+              sha: '${{ steps.git-sha.outputs.sha }}'
+            }
+          })
