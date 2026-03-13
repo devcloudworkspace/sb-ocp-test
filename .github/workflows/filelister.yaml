@@ -1,0 +1,8 @@
+name: Listing of Files
+
+jobs:
+  Listing-Files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List-Files
+        uses: devcloudworkspace/sb-ocp-test-actions/actions/filelister@main
