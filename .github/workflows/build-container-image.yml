@@ -100,7 +100,7 @@ jobs:
           await github.rest.actions.createWorkflowDispatch({
             owner: 'devcloudworkspace',
             repo: 'sb-ocp-test-gitops',
-            workflow_id: 'update-container-image.yaml',
+            workflow_id: 'update-container-image.yml',
             ref: 'main',
             inputs: {
               message: '${{ steps.git-message.outputs.message }}',
