@@ -4,8 +4,8 @@
 name: Build Container Image
 
 on:
-  # push:
-  #   branches: [ main ]
+  push:
+    branches: [ main ]
 #    paths: ['**.js', '**.json' , 'public/**', 'views/**', 'Containerfile']
   workflow_dispatch:
 
